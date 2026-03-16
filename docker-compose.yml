@@ -1,0 +1,24 @@
+services:
+  unlearnable-gpu:
+    build: .
+    container_name: unlearnable-tf-dev
+    # 現代 Docker Compose 建議使用此方式宣告 GPU
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "8888:8888"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      # 確保 TensorFlow 輸出不會被 buffer
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - C:/:/c_drive
+      - .:/workspace
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
